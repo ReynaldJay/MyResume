@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reynald Jay Ebon - Resume</title>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;}
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #0d0d0d;
+      color: #e6e6e6;
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* Light mode */
+    body.light {
+      background: #f9f9f9;
+      color: #111;
+    }
+    body.light header {background: radial-gradient(circle at top, #f0f0f0, #eaeaea);}
+    body.light section {background: rgba(0,0,0,0.04);border: 1px solid rgba(0,0,0,0.08);}
+    body.light section h2 {color:#111;border-left-color:#00b894;}
+    body.light .objective {color:#222;}
+    body.light footer {background:#ddd;color:#333;}
+    body.light .scrollable::-webkit-scrollbar-thumb {background:#00b894;}
+    body.light .social-icons img {filter:invert(0);}
+
+    header {
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+      background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+    .profile-pic {
+      width: 140px;height:140px;border-radius: 50%;
+      object-fit: cover;border: 4px solid #00ffc6;
+      box-shadow: 0 0 25px rgba(0,255,198,0.5);
+      margin-bottom:1rem;
+    }
+    header h1 {font-size:2.5rem;font-weight:700;margin-bottom:0.5rem;}
+    .subtitle {font-size:1.2rem;color:#aaa;}
+    .social-icons {margin:1.2rem 0;display:flex;justify-content:center;gap:1.2rem;}
+    .social-icons img {width:28px;height:28px;filter:invert(1);transition:.3s;}
+    .social-icons img:hover {transform:scale(1.2);filter:invert(72%) sepia(91%) saturate(348%) hue-rotate(120deg) brightness(102%) contrast(101%);}
+    .objective {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: #ccc;
+      margin-top: 1rem;
+      transition: color 0.3s;
+    }
+
+    /* Theme toggle button */
+    #theme-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.4rem;
+      color: #00ffc6;
+    }
+
+    .container {
+      max-width:1100px;margin:2rem auto;padding:0 1rem;
+      display:grid;grid-template-columns: 1fr 1fr;gap:2rem;
+    }
+    section {
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px;padding:1.5rem;
+      backdrop-filter: blur(6px);
+      transition:transform .3s, box-shadow .3s, background 0.3s, color 0.3s;
+    }
+    section:hover {transform:translateY(-4px);box-shadow:0 0 20px rgba(0,255,198,0.15);}
+    section h2 {margin-bottom:1rem;font-size:1.2rem;border-left:4px solid #00ffc6;padding-left:.6rem;transition:color 0.3s;}
+
+    .tools-list ul {display:flex;flex-wrap:wrap;gap:.8rem;list-style:none;}
+    .tools-list li {background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:.5rem .8rem;display:flex;align-items:center;font-size:.9rem;}
+    .tools-list img {width:20px;height:20px;margin-right:.5rem;}
+
+    /* Skills with progress bars */
+    .skill {margin-bottom:1rem;}
+    .skill-label {display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:.3rem;}
+    .progress {width:100%;height:10px;background:#222;border-radius:6px;overflow:hidden;}
+    .progress-bar {height:100%;background:linear-gradient(90deg,#00ffc6,#00ff94);width:0%;border-radius:6px;transition:width 1.5s ease-in-out;}
+
+    /* Scrollable panels */
+    .scrollable {max-height: 350px;overflow-y: auto;padding-right: 0.5rem;}
+    .scrollable::-webkit-scrollbar {width: 6px;}
+    .scrollable::-webkit-scrollbar-thumb {background: #00ffc6;border-radius: 4px;}
+
+    /* Cards */
+    .grid {display:grid;grid-template-columns: repeat(auto-fit,minmax(240px,1fr));gap:1rem;}
+    .card {
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:10px;overflow:hidden;
+      text-align:center;position:relative;
+      transition:transform .3s, box-shadow .3s;
+    }
+    .card:hover {transform:translateY(-6px);box-shadow:0 0 20px rgba(0,255,198,0.25);}
+    .card img {width:100%;height:160px;object-fit:contain;background:#111;}
+    .card p {padding:.8rem;font-weight:500;}
+
+    /* Scanning hover effect */
+    .card::after {
+      content:"";
+      position:absolute;top:-100%;left:0;width:100%;height:100%;
+      background: linear-gradient(to bottom, rgba(0,255,198,0.2) 0%, rgba(0,255,198,0) 80%);
+      transform:translateY(-100%);
+      transition:transform 0.6s ease;
+      pointer-events:none;
+    }
+    .card:hover::after {transform:translateY(100%);}
+
+    .job {margin-bottom:1.5rem;}
+    .job h3 {margin-bottom:.3rem;}
+    .job p {margin-bottom:.5rem;font-style:italic;font-size:.9rem;color:#aaa;}
+
+    footer {text-align:center;padding:1.5rem;background:#111;border-top:1px solid rgba(255,255,255,0.1);margin-top:2rem;color:#666;font-size:.9rem;}
+
+    @media(max-width:900px){.container{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <header>
+    <button id="theme-toggle">🌙</button>
+    <img src="images/profile.jpg" alt="Profile Picture" class="profile-pic">
+    <h1>Reynald Jay Ebon</h1>
+    <p class="subtitle">Aspiring SOC Analyst</p>
+    <div class="social-icons">
+      <a href="https://github.com/ReynaldJay"><img src="images/github.svg" alt="GitHub"></a>
+      <a href="https://www.upwork.com/freelancers/~011985b0ae6faf2c59"><img src="images/upwork.svg" alt="Upwork"></a>
+      <a href="https://www.linkedin.com/in/reynald-jay-ebon-26731a371"><img src="images/linkedin.svg" alt="LinkedIn"></a>
+      <a href="https://www.facebook.com/reynald.ebon/"><img src="images/facebook.svg" alt="Facebook"></a>
+    </div>
+    <p class="objective">
+      Aspiring SOC Analyst passionate about cybersecurity defense, incident response, and log analysis. 
+      Actively pursuing Security+ certification to gain relevant knowledge, build expertise, and advance a career in cybersecurity. 
+      Fast learner with proven reliability and problem-solving skills.
+    </p>
+  </header>
+
+  <div class="container">
+    <section>
+      <h2>Contact</h2>
+      <p><img src="images/phone.svg" width="16"> 09174183054</p>
+      <p><img src="images/email.svg" width="16"> <a href="mailto:reynald.dg15@gmail.com">reynald.dg15@gmail.com</a></p>
+      <p><img src="images/location.svg" width="16"> Binan City, Laguna</p>
+    </section>
+
+    <section class="tools-list scrollable">
+      <h2>Tools Familiar With</h2>
+      <ul>
+        <li><img src="images/splunktools.svg">Splunk</li>
+        <li><img src="images/wiresharktools.svg">Wireshark</li>
+        <li><img src="images/kalitools.svg">Kali Linux</li>
+        <li><img src="images/metasploittools.svg">Metasploit</li>
+        <li><img src="images/githubtools.svg">GitHub</li>
+      </ul>
+    </section>
+
+    <section class="scrollable">
+      <h2>Skills</h2>
+      <div class="skill"><div class="skill-label"><span>Incident Response & Threat Analysis</span><span>75%</span></div><div class="progress"><div class="progress-bar" data-width="75%"></div></div></div>
+      <div class="skill"><div class="skill-label"><span>SIEM Basics</span><span>70%</span></div><div class="progress"><div class="progress-bar" data-width="70%"></div></div></div>
+      <div class="skill"><div class="skill-label"><span>HTML, CSS, JavaScript</span><span>65%</span></div><div class="progress"><div class="progress-bar" data-width="65%"></div></div></div>
+      <div class="skill"><div class="skill-label"><span>GitHub / JSON</span><span>60%</span></div><div class="progress"><div class="progress-bar" data-width="60%"></div></div></div>
+      <div class="skill"><div class="skill-label"><span>AI Tools & Automation</span><span>80%</span></div><div class="progress"><div class="progress-bar" data-width="80%"></div></div></div>
+      <div class="skill"><div class="skill-label"><span>Technical Documentation</span><span>70%</span></div><div class="progress"><div class="progress-bar" data-width="70%"></div></div></div>
+      <div class="skill"><div class="skill-label"><span>Adobe Photoshop</span><span>90%</span></div><div class="progress"><div class="progress-bar" data-width="90%"></div></div></div>
+      <div class="skill"><div class="skill-label"><span>Adobe Illustrator</span><span>95%</span></div><div class="progress"><div class="progress-bar" data-width="95%"></div></div></div>
+    </section>
+
+    <section>
+      <h2>Certifications</h2>
+      <div class="scrollable">
+        <div class="grid">
+          <div class="card">
+            <a href="https://coursera.org/share/54be1403e38c7a41dcffa26884af32b1" target="_blank">
+              <img src="images/FoundationsofCybersecurity.png" alt="Cert 1">
+              <p>Foundations of Cybersecurity - Coursera</p>
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://coursera.org/share/13c635dcb42aefbf420cec25e65b6983" target="_blank">
+              <img src="images/NetworkingFundamentals.png" alt="Cert 2">
+              <p>Networking Fundamentals - Coursera</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scrollable">
+      <h2>Work Experience</h2>
+      <div class="job">
+        <h3>Virtual Assistant / Graphic Designer</h3>
+        <p>Upwork.com | Aug 2018 – Present</p>
+        <ul>
+          <li>Top Rated Plus: 28 jobs, 4,200+ hours, 100% success rate</li>
+          <li>Admin support, design, and AI tool integration</li>
+          <li>Strong client communication and reliability</li>
+        </ul>
+      </div>
+      <div class="job">
+        <h3>Computer Administrator</h3>
+        <p>AprilGames Computer Services | 2015 – 2017</p>
+        <ul>
+          <li>Managed systems, troubleshooting, and network upkeep</li>
+          <li>Developed system admin and problem-solving skills</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <div class="scrollable">
+        <div class="grid">
+          <div class="card">
+            <a href="https://reynaldjay.github.io/Simple-Log-Analysis-and-Threat-Detection-Project/" target="_blank">
+              <img src="images/project1.png" alt="Project 1">
+              <p>Simple Log Analysis & Threat Detection Tool</p>
+            </a>
+          </div>
+          <div class="card">
+            <a href="https://reynaldjay.github.io/Incident-Response-Report-Web-App/" target="_blank">
+              <img src="images/project2.png" alt="Project 2">
+              <p>Incident Response Report Generator</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Reynald Jay Ebon</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Animate skill bars only
+      document.querySelectorAll(".progress-bar").forEach(bar => {
+        const width = bar.getAttribute("data-width");
+        setTimeout(()=>{ bar.style.width = width; }, 300);
+      });
+
+      // Theme toggle
+      const toggle = document.getElementById("theme-toggle");
+      const body = document.body;
+
+      // Load saved theme OR detect system preference
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme) {
+        if (savedTheme === "light") body.classList.add("light");
+      } else {
+        if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+          body.classList.add("light");
+        }
+      }
+
+      // Update toggle icon
+      function updateIcon() {
+        toggle.textContent = body.classList.contains("light") ? "☀️" : "🌙";
+      }
+      updateIcon();
+
+      // Toggle theme on click
+      toggle.addEventListener("click", () => {
+        body.classList.toggle("light");
+        localStorage.setItem("theme", body.classList.contains("light") ? "light" : "dark");
+        updateIcon();
+      });
+    });
+  </script>
+</body>
+</html>
