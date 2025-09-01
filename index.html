@@ -312,6 +312,8 @@
 
   <footer>
     <p>&copy; 2025 Reynald Jay Ebon</p>
+    <p>Total Visits: <span id="visit-counter">0</span></p>
+
   </footer>
 
   <script>
@@ -349,9 +351,60 @@
         updateIcon();
       });
     });
-   
-  </script>
+
+
+      </script>
+  <!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+// Your Firebase config
+
+
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyArVnEzFOy2og1YF2CbS6FhBUHzGJz8r_Y",
+  authDomain: "resume-counter-09012025.firebaseapp.com",
+  databaseURL: "https://resume-counter-09012025-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "resume-counter-09012025",
+  storageBucket: "resume-counter-09012025.firebasestorage.app",
+  messagingSenderId: "79017359944",
+  appId: "1:79017359944:web:ac4c10fa5e35e1f0ad767d",
+  measurementId: "G-1GLX98GREM"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Reference to counter
+const counterRef = db.ref('visits');
+
+// Increment counter atomically
+counterRef.transaction(current => (current || 0) + 1)
+  .then(() => {
+    // Get current value and display it
+    counterRef.once('value').then(snapshot => {
+      document.getElementById('visit-counter').textContent = snapshot.val();
+    });
+  })
+  .catch(err => console.error(err));
+</script>
+
 </body>
 </html>
+
 
 
