@@ -356,72 +356,90 @@
       </script>
 
   
-<!-- Firebase (Compat version, no imports needed) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  
+<!-- Firebase scripts -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  // Import Firebase SDK
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+  import { getDatabase, ref, get, set, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
   // Your Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyArVnEzFOy2og1YF2CbS6FhBUHzGJz8r_Y",
-  authDomain: "resume-counter-09012025.firebaseapp.com",
-  databaseURL: "https://resume-counter-09012025-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "resume-counter-09012025",
-  storageBucket: "resume-counter-09012025.firebasestorage.app",
-  messagingSenderId: "79017359944",
-  appId: "1:79017359944:web:ac4c10fa5e35e1f0ad767d",
-  measurementId: "G-1GLX98GREM"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyArVnEzFOy2og1YF2CbS6FhBUHzGJz8r_Y",
+    authDomain: "resume-counter-09012025.firebaseapp.com",
+    databaseURL: "https://resume-counter-09012025-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "resume-counter-09012025",
+    storageBucket: "resume-counter-09012025.firebasestorage.app",
+    messagingSenderId: "79017359944",
+    appId: "1:79017359944:web:ac4c10fa5e35e1f0ad767d",
+    measurementId: "G-1GLX98GREM"
+  };
 
-  // Init Firebase
+  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const db = getDatabase(app);
 
-  // Visitor counter with localStorage session check
-  async function updateVisitorCount() {
-    const counterRef = doc(db, "siteData", "visitorCounter");
-    const visitedKey = "resume_visitor_counted"; // flag for this site
+  // Counter reference
+  const counterRef = ref(db, "visitCounter");
 
-    try {
-      const snap = await getDoc(counterRef);
+  // Function to update/reset counter
+  function updateCounter() {
+    runTransaction(counterRef, (currentData) => {
+      const now = Date.now();
+      const eightHours = 8 * 60 * 60 * 1000; // 8 hours in ms
 
-      // If counter doc doesn't exist yet, create it
-      if (!snap.exists()) {
-        await setDoc(counterRef, { count: 0 });
+      if (currentData === null) {
+        return { count: 1, lastReset: now };
       }
 
-      // Only increment if not yet counted in this browser
-      if (!localStorage.getItem(visitedKey)) {
-        await updateDoc(counterRef, { count: increment(1) });
-        localStorage.setItem(visitedKey, "true");
-        console.log("Visitor counted!");
-      } else {
-        console.log("Already counted, skipping increment.");
+      // Reset if last reset was 8+ hours ago
+      if (!currentData.lastReset || (now - currentData.lastReset) >= eightHours) {
+        return { count: 1, lastReset: now };
       }
 
-      // Always update UI with latest value
-      const updatedSnap = await getDoc(counterRef);
-      document.getElementById("visitorCount").textContent = updatedSnap.data().count;
-
-    } catch (err) {
-      console.error("Error updating visitor count:", err);
-    }
+      // Otherwise increment
+      return {
+        count: (currentData.count || 0) + 1,
+        lastReset: currentData.lastReset
+      };
+    }).then((result) => {
+      if (result.committed) {
+        const newCount = result.snapshot.val().count;
+        document.getElementById("visit-count").innerText = newCount;
+      }
+    });
   }
 
-  updateVisitorCount();
+  // Fetch initial counter value
+  get(counterRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      const now = Date.now();
+      const eightHours = 8 * 60 * 60 * 1000;
+
+      if ((now - (data.lastReset || 0)) >= eightHours) {
+        // Reset if expired
+        set(counterRef, { count: 0, lastReset: now });
+        document.getElementById("visit-count").innerText = 0;
+      } else {
+        document.getElementById("visit-count").innerText = data.count || 0;
+      }
+    } else {
+      // First time setup
+      set(counterRef, { count: 0, lastReset: Date.now() });
+      document.getElementById("visit-count").innerText = 0;
+    }
+  });
+
+  // Update counter on visit
+  updateCounter();
 </script>
 
-<div>
-  Visitors: <span id="visitorCount">Loading...</span>
-</div>
 
 
 
 </body>
 </html>
+
 
 
 
