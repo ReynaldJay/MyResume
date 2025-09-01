@@ -22,7 +22,7 @@
     }
     body.light header {background: radial-gradient(circle at top, #f0f0f0, #eaeaea);}
     body.light section {background: rgba(0,0,0,0.04);border: 1px solid rgba(0,0,0,0.08);}
-    body.light section h2 {color:#111;border-left-color:#00b894;}
+    body.light section h2 {color:#111;border-left-color:#00b894;background:#f9f9f9;}
     body.light .objective {color:#222;}
     body.light footer {background:#ddd;color:#333;}
     body.light .scrollable::-webkit-scrollbar-thumb {background:#00b894;}
@@ -30,7 +30,7 @@
 
     header {
       text-align: center;
-      padding: 4rem 1rem 3rem;
+      padding: 4rem 1rem 2rem;
       background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
       border-bottom: 1px solid rgba(255,255,255,0.1);
       position: relative;
@@ -41,17 +41,23 @@
       box-shadow: 0 0 25px rgba(0,255,198,0.5);
       margin-bottom:1rem;
     }
-    header h1 {font-size:2.5rem;font-weight:700;margin-bottom:0.5rem;}
-    .subtitle {font-size:1.2rem;color:#aaa;}
-    .social-icons {margin:1.2rem 0;display:flex;justify-content:center;gap:1.2rem;}
-    .social-icons img {width:28px;height:28px;filter:invert(1);transition:.3s;}
-    .social-icons img:hover {transform:scale(1.2);filter:invert(72%) sepia(91%) saturate(348%) hue-rotate(120deg) brightness(102%) contrast(101%);}
+    header h1 {font-size:2.5rem;font-weight:700;margin-bottom:0.8rem;}
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+    .contact-info img {width:16px;vertical-align:middle;margin-right:6px;}
+
     .objective {
       max-width: 700px;
-      margin: 0 auto;
+      margin: 2rem auto 0 auto;
       font-size: 1rem;
       color: #ccc;
-      margin-top: 1rem;
       transition: color 0.3s;
     }
 
@@ -77,9 +83,18 @@
       border-radius:12px;padding:1.5rem;
       backdrop-filter: blur(6px);
       transition:transform .3s, box-shadow .3s, background 0.3s, color 0.3s;
+      display: flex;
+      flex-direction: column;
     }
     section:hover {transform:translateY(-4px);box-shadow:0 0 20px rgba(0,255,198,0.15);}
-    section h2 {margin-bottom:1rem;font-size:1.2rem;border-left:4px solid #00ffc6;padding-left:.6rem;transition:color 0.3s;}
+    section h2 {
+      margin-bottom:1rem;font-size:1.2rem;
+      border-left:4px solid #00ffc6;padding-left:.6rem;
+      transition:color 0.3s;
+      position: sticky; top: 0;
+      background: rgba(0,0,0,0.9); /* solid dark background */
+      z-index: 2;
+    }
 
     .tools-list ul {display:flex;flex-wrap:wrap;gap:.8rem;list-style:none;}
     .tools-list li {background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:.5rem .8rem;display:flex;align-items:center;font-size:.9rem;}
@@ -92,7 +107,7 @@
     .progress-bar {height:100%;background:linear-gradient(90deg,#00ffc6,#00ff94);width:0%;border-radius:6px;transition:width 1.5s ease-in-out;}
 
     /* Scrollable panels */
-    .scrollable {max-height: 350px;overflow-y: auto;padding-right: 0.5rem;}
+    .scrollable {overflow-y: auto;padding-right: 0.5rem;flex: 1;}
     .scrollable::-webkit-scrollbar {width: 6px;}
     .scrollable::-webkit-scrollbar-thumb {background: #00ffc6;border-radius: 4px;}
 
@@ -126,6 +141,30 @@
 
     footer {text-align:center;padding:1.5rem;background:#111;border-top:1px solid rgba(255,255,255,0.1);margin-top:2rem;color:#666;font-size:.9rem;}
 
+    /* Equal heights */
+    .skills-section, .certs-section {height: 400px;}
+    .work-section, .projects-section {height: 400px;}
+
+    /* Social icons doubled */
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+    .social-icons img {
+      width: 48px;
+      height: 48px;
+      filter: invert(1);
+      transition: transform .3s, filter .3s;
+    }
+    .social-icons img:hover {
+      transform: scale(1.15);
+      filter: invert(72%) sepia(91%) saturate(348%) hue-rotate(120deg) brightness(102%) contrast(101%);
+    }
+    body.light .social-icons img {filter: invert(0);}
+
     @media(max-width:900px){.container{grid-template-columns:1fr;}}
   </style>
 </head>
@@ -134,12 +173,10 @@
     <button id="theme-toggle">🌙</button>
     <img src="images/profile.jpg" alt="Profile Picture" class="profile-pic">
     <h1>Reynald Jay Ebon</h1>
-    <p class="subtitle">Aspiring SOC Analyst</p>
-    <div class="social-icons">
-      <a href="https://github.com/ReynaldJay"><img src="images/github.svg" alt="GitHub"></a>
-      <a href="https://www.upwork.com/freelancers/~011985b0ae6faf2c59"><img src="images/upwork.svg" alt="Upwork"></a>
-      <a href="https://www.linkedin.com/in/reynald-jay-ebon-26731a371"><img src="images/linkedin.svg" alt="LinkedIn"></a>
-      <a href="https://www.facebook.com/reynald.ebon/"><img src="images/facebook.svg" alt="Facebook"></a>
+    <div class="contact-info">
+      <span><img src="images/phone.svg">09174183054</span>
+      <span><img src="images/email.svg"><a href="mailto:reynald.dg15@gmail.com">reynald.dg15@gmail.com</a></span>
+      <span><img src="images/location.svg">Binan City, Laguna</span>
     </div>
     <p class="objective">
       Aspiring SOC Analyst passionate about cybersecurity defense, incident response, and log analysis. 
@@ -150,10 +187,13 @@
 
   <div class="container">
     <section>
-      <h2>Contact</h2>
-      <p><img src="images/phone.svg" width="16"> 09174183054</p>
-      <p><img src="images/email.svg" width="16"> <a href="mailto:reynald.dg15@gmail.com">reynald.dg15@gmail.com</a></p>
-      <p><img src="images/location.svg" width="16"> Binan City, Laguna</p>
+      <h2>Socials</h2>
+      <div class="social-icons">
+        <a href="https://github.com/ReynaldJay"><img src="images/github.svg" alt="GitHub"></a>
+        <a href="https://www.upwork.com/freelancers/~011985b0ae6faf2c59"><img src="images/upwork.svg" alt="Upwork"></a>
+        <a href="https://www.linkedin.com/in/reynald-jay-ebon-26731a371"><img src="images/linkedin.svg" alt="LinkedIn"></a>
+        <a href="https://www.facebook.com/reynald.ebon/"><img src="images/facebook.svg" alt="Facebook"></a>
+      </div>
     </section>
 
     <section class="tools-list scrollable">
@@ -167,19 +207,45 @@
       </ul>
     </section>
 
-    <section class="scrollable">
-      <h2>Skills</h2>
-      <div class="skill"><div class="skill-label"><span>Incident Response & Threat Analysis</span><span>75%</span></div><div class="progress"><div class="progress-bar" data-width="75%"></div></div></div>
-      <div class="skill"><div class="skill-label"><span>SIEM Basics</span><span>70%</span></div><div class="progress"><div class="progress-bar" data-width="70%"></div></div></div>
-      <div class="skill"><div class="skill-label"><span>HTML, CSS, JavaScript</span><span>65%</span></div><div class="progress"><div class="progress-bar" data-width="65%"></div></div></div>
-      <div class="skill"><div class="skill-label"><span>GitHub / JSON</span><span>60%</span></div><div class="progress"><div class="progress-bar" data-width="60%"></div></div></div>
-      <div class="skill"><div class="skill-label"><span>AI Tools & Automation</span><span>80%</span></div><div class="progress"><div class="progress-bar" data-width="80%"></div></div></div>
-      <div class="skill"><div class="skill-label"><span>Technical Documentation</span><span>70%</span></div><div class="progress"><div class="progress-bar" data-width="70%"></div></div></div>
-      <div class="skill"><div class="skill-label"><span>Adobe Photoshop</span><span>90%</span></div><div class="progress"><div class="progress-bar" data-width="90%"></div></div></div>
-      <div class="skill"><div class="skill-label"><span>Adobe Illustrator</span><span>95%</span></div><div class="progress"><div class="progress-bar" data-width="95%"></div></div></div>
-    </section>
+   <section class="skills-section">
+  <h2>Skills</h2>
+  <div class="scrollable">
+    <div class="skill">
+      <div class="skill-label"><span>Incident Response & Threat Analysis</span><span>75%</span></div>
+      <div class="progress"><div class="progress-bar" data-width="75%"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-label"><span>SIEM Basics</span><span>70%</span></div>
+      <div class="progress"><div class="progress-bar" data-width="70%"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-label"><span>HTML, CSS, JavaScript</span><span>65%</span></div>
+      <div class="progress"><div class="progress-bar" data-width="65%"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-label"><span>GitHub / JSON</span><span>60%</span></div>
+      <div class="progress"><div class="progress-bar" data-width="60%"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-label"><span>AI Tools & Automation</span><span>80%</span></div>
+      <div class="progress"><div class="progress-bar" data-width="80%"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-label"><span>Technical Documentation</span><span>70%</span></div>
+      <div class="progress"><div class="progress-bar" data-width="70%"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-label"><span>Adobe Photoshop</span><span>90%</span></div>
+      <div class="progress"><div class="progress-bar" data-width="90%"></div></div>
+    </div>
+    <div class="skill">
+      <div class="skill-label"><span>Adobe Illustrator</span><span>95%</span></div>
+      <div class="progress"><div class="progress-bar" data-width="95%"></div></div>
+    </div>
+  </div>
+</section>
 
-    <section>
+    <section class="certs-section">
       <h2>Certifications</h2>
       <div class="scrollable">
         <div class="grid">
@@ -199,29 +265,31 @@
       </div>
     </section>
 
-    <section class="scrollable">
-      <h2>Work Experience</h2>
-      <div class="job">
-        <h3>Virtual Assistant / Graphic Designer</h3>
-        <p>Upwork.com | Aug 2018 – Present</p>
-        <ul>
-          <li>Top Rated Plus: 28 jobs, 4,200+ hours, 100% success rate</li>
-          <li>Admin support, design, and AI tool integration</li>
-          <li>Detail-Oriented in Core L1 SOC monitoring responsibilities</li>
-          <li>Strong client communication and reliability</li>
-        </ul>
-      </div>
-      <div class="job">
-        <h3>Computer Administrator</h3>
-        <p>AprilGames Computer Services | 2015 – 2017</p>
-        <ul>
-          <li>Managed systems, troubleshooting, and network upkeep</li>
-          <li>Developed system admin and problem-solving skills</li>
-        </ul>
-      </div>
-    </section>
+<section class="work-section">
+  <h2>Work Experience</h2>
+  <div class="scrollable">
+    <div class="job">
+      <h3>Virtual Assistant / Graphic Designer</h3>
+      <p>Upwork.com | Aug 2018 – Present</p>
+      <ul>
+        <li>Top Rated Plus: 28 jobs, 4,200+ hours, 100% success rate</li>
+        <li>Admin support, design, and AI tool integration</li>
+        <li>Strong client communication and reliability</li>
+        <li>Detail-Oriented in Core L1 SOC monitoring responsibilities</li>
+      </ul>
+    </div>
+    <div class="job">
+      <h3>Computer Administrator</h3>
+      <p>AprilGames Computer Services | 2015 – 2017</p>
+      <ul>
+        <li>Managed systems, troubleshooting, and network upkeep</li>
+        <li>Developed system admin and problem-solving skills</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-    <section>
+    <section class="projects-section">
       <h2>Projects</h2>
       <div class="scrollable">
         <div class="grid">
@@ -284,4 +352,3 @@
   </script>
 </body>
 </html>
-
