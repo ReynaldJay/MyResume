@@ -312,6 +312,7 @@
 
   <footer>
     <p>&copy; 2025 Reynald Jay Ebon</p>
+    <p>Total Visits: <span id="visit-counter">0</span></p>
   </footer>
 
   <script>
@@ -349,6 +350,16 @@
         updateIcon();
       });
     });
+    // CountAPI global visit counter
+fetch('https://api.countapi.xyz/hit/reynaldjay/resume_counter')
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('visit-counter').textContent = data.value;
+  })
+  .catch(err => {
+    console.error('CountAPI error:', err);
+  });
   </script>
 </body>
 </html>
+
