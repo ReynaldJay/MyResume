@@ -381,30 +381,21 @@ const firebaseConfig = {
   measurementId: "G-1GLX98GREM"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-// Reference to counter
-const counterRef = db.ref('visits');
-
-// Increment counter atomically
-counterRef.transaction(current => (current || 0) + 1)
-  .then(() => {
-    // Get current value and display it
-    counterRef.once('value').then(snapshot => {
-      document.getElementById('visit-counter').textContent = snapshot.val();
-    });
-  })
-  .catch(err => console.error(err));
+  const countRef = ref(db, "visitCount");
+  get(countRef).then((snapshot) => {
+    let current = snapshot.exists() ? snapshot.val() : 0;
+    set(countRef, current + 1);
+    document.getElementById("visit-count").textContent = current + 1;
+    console.log("Updated visit count:", current + 1);
+  });
 </script>
 
 </body>
 </html>
+
 
 
 
