@@ -360,9 +360,8 @@
   
 <!-- Firebase scripts -->
 <script type="module">
-  // Import Firebase SDK
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-  import { getDatabase, ref, runTransaction } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+  import { getDatabase, ref, runTransaction, get } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
   // Your Firebase config
   const firebaseConfig = {
@@ -376,47 +375,33 @@
     measurementId: "G-1GLX98GREM"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-
-  // Counter reference
   const counterRef = ref(db, "visitCounter");
 
-  // Function to update/reset counter
-  function updateCounter() {
-    runTransaction(counterRef, (currentData) => {
-      const now = Date.now();
-      const eightHours = 8 * 60 * 60 * 1000; // 8 hours in ms
+  async function updateCounter() {
+    const now = Date.now();
+    const eightHours = 8 * 60 * 60 * 1000;
+    const lastVisit = localStorage.getItem("lastVisit");
 
-      if (currentData === null) {
-        console.log("First visit: initializing counter");
-        return { count: 1, lastReset: now };
-      }
+    // Only increment if last visit was more than 8 hours ago
+    if (!lastVisit || now - parseInt(lastVisit) > eightHours) {
+      await runTransaction(counterRef, (currentData) => {
+        if (currentData === null) {
+          return { count: 1 };
+        }
+        return { count: (currentData.count || 0) + 1 };
+      });
+      localStorage.setItem("lastVisit", now.toString());
+    }
 
-      // Reset if last reset was 8+ hours ago
-      if (!currentData.lastReset || (now - currentData.lastReset) >= eightHours) {
-        console.log("Resetting counter after 8 hours");
-        return { count: 1, lastReset: now };
-      }
-
-      // Otherwise increment
-      console.log("Incrementing counter");
-      return {
-        count: (currentData.count || 0) + 1,
-        lastReset: currentData.lastReset
-      };
-    }).then((result) => {
-      if (result.committed && result.snapshot.exists()) {
-        const newCount = result.snapshot.val().count;
-        document.getElementById("visit-count").innerText = newCount;
-      }
-    }).catch((error) => {
-      console.error("Transaction failed: ", error);
-    });
+    // Always display current count
+    const snapshot = await get(counterRef);
+    if (snapshot.exists()) {
+      document.getElementById("visit-count").innerText = snapshot.val().count;
+    }
   }
 
-  // Run on load
   updateCounter();
 </script>
 
@@ -424,8 +409,10 @@
 
 
 
+
 </body>
 </html>
+
 
 
 
