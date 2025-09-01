@@ -354,38 +354,51 @@
 
 
       </script>
+
+  
 <!-- Firebase (Compat version, no imports needed) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script>
+  
+<script type="module">
+  // Import from Firebase CDN
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
   // Your Firebase config
   const firebaseConfig = {
-    apiKey: "AIzaSyArVnEzFOy2og1YF2CbS6FhBUHzGJz8r_Y",
-    authDomain: "resume-counter-09012025.firebaseapp.com",
-    databaseURL: "https://resume-counter-09012025-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "resume-counter-09012025",
-    storageBucket: "resume-counter-09012025.firebasestorage.app",
-    messagingSenderId: "79017359944",
-    appId: "1:79017359944:web:ac4c10fa5e35e1f0ad767d",
-    measurementId: "G-1GLX98GREM"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+    projectId: "YOUR_PROJECT",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
   };
 
-  // Init Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-  // Visitor counter
-  const countRef = db.ref("visitCount");
-  countRef.get().then((snapshot) => {
-    let current = snapshot.exists() ? snapshot.val() : 0;
-    countRef.set(current + 1);
-    document.getElementById("visit-counter").textContent = current + 1;
-    console.log("Updated visit count:", current + 1);
+  // Example: write visit count
+  const visitsRef = ref(db, "visits");
+
+  get(visitsRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      let count = snapshot.val() + 1;
+      set(visitsRef, count);
+      console.log("Visit count:", count);
+    } else {
+      set(visitsRef, 1);
+      console.log("Visit count: 1");
+    }
   });
 </script>
 
+
 </body>
 </html>
+
 
 
 
